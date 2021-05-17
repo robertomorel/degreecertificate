@@ -1,0 +1,89 @@
+service:
+  name: "degreecertificate"
+
+# Sempre que instarmos um plugin, precisamos informar aqui
+plugins:
+  - serverless-webpack # Plugin padrão
+  - serverless-offline # Para podermos rodar a aplicação offline(não precisar subir para a AWS sempre)
+  - serverless-dynamodb-local
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js # Nos auxilia a executar nossa aplicação (princ. em dev)
+    includeModules: true
+  dynamoDB: # Configurações do dynamoDB na AWS
+    stages: # Apenas nas stacks dev e local
+      - dev
+      - local
+      - test
+    start: # Qndo dermos o "start" no dynamoDB
+      port: 8000 # Usar a porta 8000
+      inMemory: true # Para criar na aplicação uma pasta com o dynamo
+      migrate: true  # Quando subirmos, caso a tabela não existir na AWS, ela é criada
+  bucket: serverlesscertificatesignite    
+
+provider:
+  name: aws # Obrigatório informar pelo menos um provider (Google Cloud / Azure / AWS...)
+  region: us-east-1 # Mesma região do user, de preferência
+  runtime: nodejs14.x # Utilizar esta versão do node para deploy
+  #memorySize: 256
+  iamRoleStatements:
+    - Effect: Allow # Permitindo...
+      Action:
+        - dynamodb:* # Todas as permissões do dynamodb
+      Resource: "*" # Para todas as tabelas
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
+
+functions:
+  hello: # Script hello.ts
+    handler: src/functions/hello.handle # Função Handle
+    events:
+      - http:
+          path: /hello
+          method: GET
+          cors: true  
+  generateCertificate:
+    handler: src/functions/generateCertificate.handle
+    events:
+      - http:
+          path: /generateCertificate
+          method: POST
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query # Permissão para quert
+          - dynamodb:PutItem # Permissão para inserir um elemento
+        Resource: "arn:aws:dynamodb:${self.provider.region}:*:table/users_certificates" # Qual a tabela que será afetada pelos acessos?
+  verifyCertificate:
+    handler: src/functions/verifyCertificate.handle
+    events:
+      - http:
+          path: /verifyCertificate/{id}
+          method: GET
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query # Permissão para quert
+        Resource: "arn:aws:dynamodb:${self.provider.region}:*:table/users_certificates" # Qual a tabela que será afetada pelos acessos?    
+
+resources:
+  Resources:
+    dbCertificateUsers:
+      Type: AWS::DynamoDB::Table # Tabela do Dynamo na AWS
+      Properties:
+        TableName: users_certificates # Nome da tabela
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5 # Quantas requisições por segundo?
+          WriteCapacityUnits: 5
+        AttributeDefinitions:
+          - AttributeName: id
+            # Number: N; Binário: B;
+            AttributeType: S # Tipo String 
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH # Tipo da chave | Tb poderia ser por um range         
