@@ -36,6 +36,8 @@ But, Serverless Architectures are new and therefore require a shift in how we pr
 - There is a implicit server, but we don´t have any concern about scaling it, configuring it, its infra or its needed containers.
   - If we decide to use Amazon, for example, all those steps are made by the AWS available services. 
 
+> Amazon API Gateway is responsible to mapped all routes using the URL in order to know exactly which function should be executed 
+
 ### Advantages
 - Lower cost
 - Practical e faster to build to a production
@@ -46,6 +48,9 @@ But, Serverless Architectures are new and therefore require a shift in how we pr
   - Firebase
 - FaaS => Function as a Service
   - AWS Lambda, Azure function, Google Cloud function 
+
+## Geting Started
+- Go the official documentation [here](https://www.serverless.com/examples/)!  
 
 ## Running the project 🚀 
 
