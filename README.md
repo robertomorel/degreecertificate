@@ -1,6 +1,6 @@
 <h1 align="center">⚡ Serverless - AWS ⚡</h1>
 
-----
+<br>
 
 <div align="center">
 
@@ -11,9 +11,9 @@
 
 <div>  
 
-<br>
+----
 
-## ✨ Tecnologias
+## Technologies ✨ 
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -22,29 +22,74 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Serverless Framework](serverless.com/)
 - [Amazon Lambda](https://aws.amazon.com/pt/lambda/)
 
-## 💻 Projeto
+## About 💻 
 
-O projeto tem como responsabilidade gerar um certificado para um usuário e a possibilidade de pesquisar a validade de um certificado.
+This is what the Serverless Architecture offers — It's built on next-generation public cloud services that auto-scale and charge only when used. When scale, capacity planning & cost management are automated, the result is software that's easier to build, maintain, and often up to 99% cheaper.
 
-## 🚀 Como executar
+But, Serverless Architectures are new and therefore require a shift in how we previously thought about architectures & workflows. Our goal at Serverless Inc. is to give developers, teams and orgs all of the tools they need to build and operate serverless applications, in one simple, powerful & elegant experience.
 
-- Clone o repositório
+- Event oriented architecture; 
+- Small parts of a project;
+- Example: 
+  - Image Register: creating events which only have to upload images to AWS S3
+- Doesn´t need a HTTP function to work
+- There is a implicit server, but we don´t have any concern about scaling it, configuring it, its infra or its needed containers.
+  - If we decide to use Amazon, for example, all those steps are made by the AWS available services. 
 
-### Para rodar localmente
+### Advantages
+- Lower cost
+- Practical e faster to build to a production
+- Only pay for usage
 
-- Rode `yarn` para instalar as dependências
-- Rode o `yarn dev` para iniciar a aplicação em ambiente local.
-- Rode `yarn dynamo:start` para iniciar o banco de dados em ambiente local.
+### Modules
+- BaaS => Backend as a Service     
+  - Firebase
+- FaaS => Function as a Service
+  - AWS Lambda, Azure function, Google Cloud function 
 
-### Para fazer o deploy
+## Running the project 🚀 
 
-- Configurar as credenciais do usuário
-- Rode `yarn deploy` para subir o projeto para AWS Lambda
+- Clone the repo
+```bash
+git clone https://github.com/robertomorel/degreecertificate.git
+```
 
-## 📄 Licença
+### Dependenties
+You have to inform your AWS credentials. For that, you need to create a new user on it. 
+> Take down the <b>key</b> and <b>secret</b> from the register 
+
+After that, you might wanna run the following command:
+```bash
+# "-o" is to overwrite anything
+serverless config credentials --provider aws --key=YOUR_KEY --secret YOUR_SECRET -o
+```
+
+A folter called <b>.aws</b> must be created on <b>~/Users/YOUR_USER/</b>
+> Look for the file "credentials"
+
+### Running localy
+```bash
+# Installing all dependencies
+yarn
+
+# Initiate
+yarn dev
+
+# Initiate local DB
+yarn dynamo:start
+```
+
+### Deploy
+```bash
+# To upload the project to AWS Lambda
+yarn deploy
+```
+
+## License 📄 
 
 Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
 
 ---
 
-Feito com ♥ by Rocketseat 👋🏻
+## Let´s Talk 🤩
+[LinkedIn](https://www.linkedin.com/in/roberto-morel-6b9065193/)
