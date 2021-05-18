@@ -9,7 +9,7 @@
   [![npm version](https://badge.fury.io/js/serverless.svg)](https://badge.fury.io/js/serverless)
   [![license](https://img.shields.io/npm/l/serverless.svg)](https://www.npmjs.com/package/serverless)
 
-<div>  
+</div>  
 
 ----
 
